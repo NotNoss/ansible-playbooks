@@ -16,7 +16,32 @@
         cmd: "makepkg -sfi --noconfirm"
         creates: /usr/bin/yay
 
+    - name: Go back to home
+      command:
+        chdir: "/home/noss/"
+
     - name: Delete yay directory
       ansible.builtin.file:
         state: absent
         path: /home/noss/yay 
+
+    - name: Install Packages
+      command:
+        cmd: yay -S --needed --noconfirm goxlr-utility hyprshot moonlight-qt oh-my-posh rich-cli vesktop-bin wlogout xdg-desktop-portal-hyprland-git bluez bluz-utils cronie curl wget firefox fzf grep less hyprcursor hypridle hyprland hyprlock hyprpaper lazygit libnotify neovim nodejs npm obsidian pavucontrol polkit playerctl python ripgrep rofi-wayland swaync tmux ttf-firacode-nerd ttf-jetbrains-mono-nerd tailwindcss-language-server typescript-language-server vim vscode-css-languageserver vscode-html-languageserver waybar yazi zip zoxide zsh
+
+    - name: Clone dot files
+      git:
+        repo: https://github.com/NotNoss/hyprland-config.git
+        dest: "/home/noss/.config/dots"
+        update: true
+
+    - name: Clone neovim files
+      git:
+        repo: https://github.com/NotNoss/nvim.git
+        dest: "/home/noss/.config/nvim"
+        update: true
+
+    - name: Stow files
+      command:
+        chdir: "/home/noss/.config"
+        cmd: stow ./ -t ~/
