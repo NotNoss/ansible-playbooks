@@ -16,9 +16,6 @@
         chdir: "/home/noss/yay"
         creates: /usr/bin/yay
 
-    - name: Go back to home
-      ansible.builtin.command: "cd /home/noss/"
-
     - name: Delete yay directory
       ansible.builtin.file:
         state: absent
