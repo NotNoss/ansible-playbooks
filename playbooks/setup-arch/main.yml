@@ -5,20 +5,19 @@
 
   tasks:
     - name: Clone yay
-      git:
+      ansible.builtin.git:
         repo: https://aur.archlinux.org/yay-bin.git
         dest: "/home/noss/yay"
         update: true
 
     - name: Build and install yay
-      command:
+      ansible.builtin.command: "makepkg -sfi --noconfirm"
+      args:
         chdir: "/home/noss/yay"
-        cmd: "makepkg -sfi --noconfirm"
         creates: /usr/bin/yay
 
     - name: Go back to home
-      command:
-        chdir: "/home/noss/"
+      ansible.builtin.command: "cd /home/noss/"
 
     - name: Delete yay directory
       ansible.builtin.file:
@@ -26,8 +25,7 @@
         path: /home/noss/yay 
 
     - name: Install Packages
-      command:
-        cmd: yay -S --needed --noconfirm goxlr-utility hyprshot moonlight-qt oh-my-posh rich-cli vesktop-bin wlogout xdg-desktop-portal-hyprland-git bluez bluz-utils cronie curl wget firefox fzf grep less hyprcursor hypridle hyprland hyprlock hyprpaper lazygit libnotify neovim nodejs npm obsidian pavucontrol polkit playerctl python ripgrep rofi-wayland swaync tmux ttf-firacode-nerd ttf-jetbrains-mono-nerd tailwindcss-language-server typescript-language-server vim vscode-css-languageserver vscode-html-languageserver waybar yazi zip zoxide zsh
+      ansible.builtin.command: "yay -S --needed --noconfirm goxlr-utility hyprshot moonlight-qt oh-my-posh rich-cli vesktop-bin wlogout xdg-desktop-portal-hyprland-git bluez bluz-utils cronie curl wget firefox fzf grep less hyprcursor hypridle hyprland hyprlock hyprpaper lazygit libnotify neovim nodejs npm obsidian pavucontrol polkit playerctl python ripgrep rofi-wayland swaync tmux ttf-firacode-nerd ttf-jetbrains-mono-nerd tailwindcss-language-server typescript-language-server vim vscode-css-languageserver vscode-html-languageserver waybar yazi zip zoxide zsh"
 
     - name: Create documents directory
       ansible.builtin.file:
@@ -43,18 +41,18 @@
 
 
     - name: Clone dot files
-      git:
+      ansible.builtin.git:
         repo: https://github.com/NotNoss/hyprland-config.git
         dest: "/home/noss/.config/dots"
         update: true
 
     - name: Clone neovim files
-      git:
+      ansible.builtin.git:
         repo: https://github.com/NotNoss/nvim.git
         dest: "/home/noss/.config/nvim"
         update: true
 
     - name: Stow files
-      command:
+      ansible.builtin.command: stow ./ -t ~/
+      args:
         chdir: "/home/noss/.config"
-        cmd: stow ./ -t ~/
