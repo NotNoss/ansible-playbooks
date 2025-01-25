@@ -1,0 +1,15 @@
+---
+- name: Setup User
+  hosts: prod
+
+  tasks:
+    - name: Create User
+      command: adduser ansible
+    - name: Add user to sudo group
+      command: usermod -aG sudo ansible
+    - name: Create ssh dir
+      command: mkdir /home/ansible/.ssh
+    - name: Move authorized_keys file
+      command: mv /home/noss/authorized_keys /home/ansible/.ssh/
+    - name: Set ssh dir perms
+      command: chown -R ansible:ansible /home/ansible/.ssh

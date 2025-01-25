@@ -1,0 +1,12 @@
+---
+- name: Update Servers in Homelab
+  hosts: prod
+
+  tasks:
+    - name: Update repo cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Upgrade Packages
+      ansible.builtin.apt:
+        upgrade: full
