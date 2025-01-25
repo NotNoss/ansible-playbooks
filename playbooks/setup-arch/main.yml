@@ -1,6 +1,7 @@
 ---
 - name: Setup Arch Linux
   hosts: local
+  connection: local
 
   tasks:
     - name: Clone yay
