@@ -50,6 +50,6 @@
         update: true
 
     - name: Stow files
-      ansible.builtin.command: stow ./ -t ~/
+      ansible.builtin.command: stow dots -t ~/
       args:
-        chdir: "/home/noss/.config"
+        chdir: "/home/noss/.config/"
