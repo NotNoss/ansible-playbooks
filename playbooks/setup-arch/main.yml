@@ -48,9 +48,3 @@
 
     - name: Install Packages
       ansible.builtin.command: "yay -S --needed --noconfirm goxlr-utility hyprshot moonlight-qt oh-my-posh rich-cli vesktop-bin wlogout xdg-desktop-portal-hyprland-git bluez bluz-utils cronie curl wget firefox fzf grep less hyprcursor hypridle hyprland hyprlock hyprpaper lazygit libnotify neovim nodejs npm obsidian pavucontrol polkit playerctl python ripgrep rofi-wayland swaync tmux ttf-firacode-nerd ttf-jetbrains-mono-nerd tailwindcss-language-server typescript-language-server vim vscode-css-languageserver vscode-html-languageserver waybar yazi zip zoxide zsh"
-
-
-    - name: Stow files
-      ansible.builtin.command: stow dots -t ~/
-      args:
-        chdir: "/home/noss/.config/"
