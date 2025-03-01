@@ -1,0 +1,9 @@
+goxlr-utility
+hyprshot
+lazydocker
+moonlight-qt
+oh-my-posh
+qimgv
+rich-cli
+vesktop-bin
+wlogout

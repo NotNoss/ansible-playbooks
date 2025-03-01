@@ -1,12 +1,13 @@
 ---
-- name: Update Servers in Homelab
-  hosts: prod
+- name: Update Linux Servers in Homelab
+  hosts: linux
+  become: yes
 
-  tasks:
-    - name: Update repo cache
-      ansible.builtin.apt:
-        update_cache: yes
+  roles:
+    - linux
 
-    - name: Upgrade Packages
-      ansible.builtin.apt:
-        upgrade: full
+- name: Update Windows Servers in Homelab
+  hosts: windows
+
+  roles:
+    - windows

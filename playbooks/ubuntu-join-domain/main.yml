@@ -1,0 +1,84 @@
+---
+- name: Join Ubuntu to Domain
+  hosts: test
+  become: true
+  vars_prompt:
+    - name: "bind_password"
+      prompt: "Password for the AD user"
+      private: yes
+
+  tasks:
+    - name: Check if already joined
+      command: realm list
+      register: realm_list_output
+      ignore_errors: true
+
+    - name: Enable NTP
+      command: timedatectl set-ntp true
+
+    - name: Update repos
+      command: apt update
+
+    - name: Install SSSD-AD
+      apt:
+        name: sssd-ad
+
+    - name: Install SSSD-Tools
+      apt:
+        name: sssd-tools
+
+    - name: Install Realmd
+      apt:
+        name: realmd
+
+    - name: Install ADCLI
+      apt:
+        name: adcli
+
+    - name: Discover Domain
+      command: realm discover local.itsnoss.com
+
+    - name: Create Kerberos File
+      lineinfile:
+        path: /etc/krb5.conf
+        line: [libdefaults]
+        create: yes
+
+    - name: Add Default Realm
+      lineinfile:
+        path: /etc/krb5.conf
+        line:   default_realm = LOCAL.ITSNOSS.COM
+
+    - name: Add Reverse DNS
+      lineinfile:
+        path: /etc/krb5.conf
+        line:   rdns = true
+
+    - name: Join Domain
+      command: /bin/bash -c "echo {{ bind_password }} | realm join --user=noss LOCAL.ITSNOSS.COM"
+
+    - name: Add DC name into SSSD Config
+      lineinfile:
+        path: /etc/sssd/sssd.conf
+        regexp: '^default_shell = /bin/bash'
+        insertbefore: '^default_shell = /bin/bash'
+        line: 'ad_server = WIN-N8LHLLBPD7O'
+
+    - name: Add DC name to hosts file
+      lineinfile:
+        path: /etc/hosts
+        line: '10.1.1.21 WIN-N8LHLLBPD7O'
+
+    - name: Home directory pam config
+      command: pam-auth-update --enable mkhomedir
+
+    - name: Add %Linux line to sudoers file
+      lineinfile:
+        path: /etc/sudoers
+        line: "%Linux ALL=(ALL) ALL"
+        validate: "visudo -cf %s"
+
+    - name: Restart SSSD service
+      service:
+        name: sssd
+        state: restarted

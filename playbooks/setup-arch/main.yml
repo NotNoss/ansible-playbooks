@@ -2,49 +2,70 @@
 - name: Setup Arch Linux
   hosts: local
   connection: local
+  become: yes
 
   tasks:
     - name: Clone yay
-      ansible.builtin.git:
+      git:
         repo: https://aur.archlinux.org/yay-bin.git
         dest: "/home/noss/yay"
         update: true
 
     - name: Build and install yay
-      ansible.builtin.command: "makepkg -sfi --noconfirm"
+      command: "makepkg -sfi --noconfirm"
       args:
         chdir: "/home/noss/yay"
         creates: /usr/bin/yay
 
     - name: Delete yay directory
-      ansible.builtin.file:
+      file:
         state: absent
-        path: /home/noss/yay 
+        path: /home/noss/yay
+
+    - name: Create .config directory
+      file:
+        path: /home/noss/.config
+        state: directory
+        mode: "0700"
 
     - name: Create documents directory
-      ansible.builtin.file:
+      file:
         path: /home/noss/Documents
         state: directory
         mode: "0700"
 
     - name: Create pictures directory
-      ansible.builtin.file:
+      file:
         path: /home/noss/Pictures
         state: directory
         mode: "0700"
 
+    - name: Install packages
+      command: "pacman -S --needed --noconfirm hyprland xdg-desktop-portal-hyprland-git bluez bluz-utils cronie curl wget firefox fzf grep less hyprcursor hypridle hyprland hyprlock hyprpaper lazygit libnotify neovim nodejs npm obsidian pavucontrol polkit playerctl python ripgrep rofi-wayland swaync tmux ttf-firacode-nerd ttf-jetbrains-mono-nerd tailwindcss-language-server typescript-language-server vim vscode-css-languageserver vscode-html-languageserver waybar yazi zip zoxide zsh d2 awk sed cifs-utils openssh zathura btop obs-studio jq"
+
+    - name: Install yay Packages
+      command: "yay -S --needed --noconfirm goxlr-utility hyprshot lazydocker moonlight-qt oh-my-posh qimgv rich-cli vesktop-bin wlogout"
 
     - name: Clone dot files
-      ansible.builtin.git:
+      git:
         repo: https://github.com/NotNoss/hyprland-config.git
         dest: "/home/noss/.config/dots"
         update: true
 
     - name: Clone neovim files
-      ansible.builtin.git:
+      git:
         repo: https://github.com/NotNoss/nvim.git
         dest: "/home/noss/.config/nvim"
         update: true
 
-    - name: Install Packages
-      ansible.builtin.command: "yay -S --needed --noconfirm goxlr-utility hyprshot moonlight-qt oh-my-posh rich-cli vesktop-bin wlogout xdg-desktop-portal-hyprland-git bluez bluz-utils cronie curl wget firefox fzf grep less hyprcursor hypridle hyprland hyprlock hyprpaper lazygit libnotify neovim nodejs npm obsidian pavucontrol polkit playerctl python ripgrep rofi-wayland swaync tmux ttf-firacode-nerd ttf-jetbrains-mono-nerd tailwindcss-language-server typescript-language-server vim vscode-css-languageserver vscode-html-languageserver waybar yazi zip zoxide zsh"
+    - name: Move Documents to Pictures
+      command: "mv /home/noss/.config/dots/Documents /home/noss/.config/dots/Pictures"
+
+    - name: Stow config files
+      command: "stow /home/noss/.config/dots/.config -t /home/noss/.config/"
+
+    - name: Stow pictures directory
+      command: "stow /home/noss/.config/dots/Pictures -t /home/noss/Pictures"
+
+    - name: Stow usr directory
+      command: "stow /home/noss/.config/dots/usr/local/bin/ -t /home/noss/usr/local/bin/"

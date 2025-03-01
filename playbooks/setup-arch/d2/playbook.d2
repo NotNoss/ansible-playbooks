@@ -1,0 +1,9 @@
+start:start
+start -> Install Yazi
+Install Yazi -> "Create ~/.config": If ~/.config does not exist
+Install Yazi -> Install Packages: If ~/.config does exist
+"Create ~/.config" -> Install Packages
+Install Packages -> Clone github repo
+Clone github repo -> Stow dot files
+Stow dot files -> Pull ssh keys
+Pull ssh keys -> Pull password store
