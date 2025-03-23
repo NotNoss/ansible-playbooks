@@ -1,0 +1,20 @@
+---
+- name: Discover Domain
+  command: realm discover local.itsnoss.com
+
+- name: Create Kerberos File
+  lineinfile:
+    path: /etc/krb5.conf
+    line: [libdefaults]
+    create: yes
+
+- name: Add Default Realm
+  lineinfile:
+    path: /etc/krb5.conf
+    line: default_realm = LOCAL.ITSNOSS.COM
+
+- name: Add Reverse DNS
+  lineinfile:
+    path: /etc/krb5.conf
+    line:   rdns = true
+

@@ -1,0 +1,74 @@
+---
+linux:
+  hosts:
+    nossvplex01:
+      ansible_host: 10.1.1.10
+    nossvnpm01:
+      ansible_host: 10.1.1.8
+    nossvauthentik01:
+      ansible_host: 10.1.1.16
+    nossvimmich01:
+      ansible_host: 10.1.1.32
+    nossvdownloads01:
+      ansible_host: 10.1.1.44
+    nossvdocker01:
+      ansible_host: 10.1.1.45
+    nossvatm01:
+      ansible_host: 10.1.1.17
+    nossvgitea01:
+      ansible_host: 10.1.1.46
+    nossvdns01:
+      ansible_host: 10.1.1.5
+  vars:
+    ansible_user: ansible
+    ansible_private_key_file: /home/noss/.ssh/ansible_key
+
+windows:
+  hosts:
+    nossvdc1:
+      ansible_host: 10.1.1.21
+    nossvmssql:
+      ansible_host: 10.1.1.47
+  vars:
+    ansible_user: ansible_svc
+
+test:
+  hosts:
+    nossvtst01:
+      ansible_host: 10.1.1.19
+  vars:
+    ansible_user: administrator
+    ansible_password: !vault | 
+      $ANSIBLE_VAULT;1.1;AES256
+      65373665393665623638626535336366353436613236373337396361303266656263306432386630
+      6131306362303665333432643266393336633338646534320a366133346134633638633263343265
+      34623434633633396161663264626430333834663764353936356262313434333361643232626130
+      6335313963346236310a623562656331653430373364353334366266633436646330383563383063
+      33396632323439353434633563316234353139396231383335363861376134666465
+
+temp:
+  hosts:
+    nossvauth01:
+      ansible_host: 10.1.1.81
+    nossvimmich01:
+      ansible_host: 10.1.1.82
+    nossvdocker01:
+      ansible_host: 10.1.1.84
+    nossvdns01:
+      ansible_host: 10.1.1.85
+    nossvatm01:
+      ansible_host: 10.1.1.86
+  vars:
+    ansible_user: administrator
+    ansible_password: !vault | 
+      $ANSIBLE_VAULT;1.1;AES256
+      65373665393665623638626535336366353436613236373337396361303266656263306432386630
+      6131306362303665333432643266393336633338646534320a366133346134633638633263343265
+      34623434633633396161663264626430333834663764353936356262313434333361643232626130
+      6335313963346236310a623562656331653430373364353334366266633436646330383563383063
+      33396632323439353434633563316234353139396231383335363861376134666465
+
+local:
+  hosts:
+    localhost:
+      ansible_host: 127.0.0.1

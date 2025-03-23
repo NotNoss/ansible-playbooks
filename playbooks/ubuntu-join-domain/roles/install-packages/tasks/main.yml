@@ -1,0 +1,16 @@
+---
+- name: Install SSSD-AD
+  apt:
+    name: sssd-ad
+
+- name: Install SSSD-Tools
+  apt:
+    name: sssd-tools
+
+- name: Install Realmd
+  apt:
+    name: realmd
+
+- name: Install ADCLI
+  apt:
+    name: adcli

@@ -1,0 +1,28 @@
+---
+- name: Add DC name into SSSD Config
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    regexp: '^default_shell = /bin/bash'
+    insertbefore: '^default_shell = /bin/bash'
+    line: 'ad_server = WIN-N8LHLLBPD7O'
+
+- name: Set default shell
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    line: "override_shell = /bin/bash"
+
+- name: Add Use FQDN
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    line: use_fully_qualified_names = False
+
+- name: Set ssh service in SSSD
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    regexp: '^services = nss, pam'
+    line: 'services = nss, pam, ssh'
+
+- name: Restart SSSD service
+  service:
+    name: sssd
+    state: restarted

@@ -1,0 +1,29 @@
+---
+- name: Join Domain
+  command: /bin/bash -c "echo {{ bind_password }} | realm join --user=noss LOCAL.ITSNOSS.COM"
+
+- name: Add DC name to hosts file
+  lineinfile:
+    path: /etc/hosts
+    line: '10.1.1.21 WIN-N8LHLLBPD7O'
+
+- name: Home directory pam config
+  command: pam-auth-update --enable mkhomedir
+
+- name: Add %Linux line to sudoers file
+  lineinfile:
+    path: /etc/sudoers
+    line: "%Linux@local.itsnoss.com ALL=(ALL:ALL) ALL"
+    validate: "visudo -cf %s"
+
+- name: Set home directories to auto create on login
+  command: pam-auth-update --enable mkhomedir
+
+- name: Permit AD Auth
+  command: realm permit -g Linux@local.itsnoss.com
+
+- name: Restart SSSD service
+  service:
+    name: sssd
+    state: restarted
+

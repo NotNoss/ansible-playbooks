@@ -1,0 +1,12 @@
+---
+- name: Create realmd.conf file
+  lineinfile:
+    path: /etc/realmd.conf
+    line: [local.itsnoss.com]
+    create: yes
+
+- name: Set fully-qualified-names setting
+  lineinfile:
+    path: /etc/realmd.conf
+    line: fully-qualified-names = no
+

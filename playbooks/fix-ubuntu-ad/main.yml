@@ -1,0 +1,11 @@
+---
+- name: Fix Ubuntu AD
+  hosts: linux
+  become: true
+
+  tasks:
+    - name: Set home directories to auto create on login
+      command: pam-auth-update --enable mkhomedir
+
+    - name: Permit AD Auth
+      command: realm permit -g Linux@local.itsnoss.com

@@ -10,6 +10,3 @@
 - name: Reboot
   reboot:
     reboot_timeout: 3600
-
-- name: Start all exited docker containers
-  command: docker restart $(docker ps -f "status=exited" -q)

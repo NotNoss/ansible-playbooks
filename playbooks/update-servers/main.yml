@@ -1,13 +1,13 @@
 ---
 - name: Update Linux Servers in Homelab
-  hosts: linux
+  hosts: temp
   become: yes
 
   roles:
     - linux
 
-- name: Update Windows Servers in Homelab
-  hosts: windows
-
-  roles:
-    - windows
+# - name: Update Windows Servers in Homelab
+#   hosts: windows
+#
+#   roles:
+#     - windows

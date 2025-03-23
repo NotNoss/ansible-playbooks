@@ -1,0 +1,12 @@
+---
+- name: Check if already joined
+  command: realm list
+  register: realm_list_output
+  ignore_errors: true
+
+- name: Enable NTP
+  command: timedatectl set-ntp true
+
+- name: Update repos
+  command: apt update
+
